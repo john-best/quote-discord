@@ -5,6 +5,7 @@ import asyncio
 
 
 DISCORD_TOKEN = "discord_token_here"
+QUOTES_FILE = "quotes.txt"
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"))
 
@@ -19,7 +20,7 @@ async def handle_get_quote(ctx, *, expr=None):
     await ctx.channel.trigger_typing()
 
     # open file to memory
-    with open("quotes.txt") as quote_file:
+    with open(QUOTES_FILE) as quote_file:
         quote_list = [line.strip() for line in quote_file]
 
     # select matching quotes
@@ -44,7 +45,7 @@ async def handle_add_quote(ctx, *, quote):
     await ctx.channel.trigger_typing()
 
     # append quote to end of file
-    with open("quotes.txt", 'a') as quote_file:
+    with open(QUOTES_FILE, 'a') as quote_file:
         quote_file.write(f"{quote}\n")
     await ctx.channel.send("Quote added!")
 
@@ -66,7 +67,7 @@ async def handle_del_quote(ctx, *, quote_to_delete=None):
         return
 
     # open file to memory
-    with open("quotes.txt") as quote_file:
+    with open(QUOTES_FILE) as quote_file:
         quote_list = [line.strip() for line in quote_file]
 
     # search for quotes matching criteria
@@ -98,7 +99,7 @@ async def handle_del_quote(ctx, *, quote_to_delete=None):
             quote_list.pop(selected_quotes[0][0])
 
             # rewrite the quote file (yikes! but it's ok because using this command is rare (hopefully))
-            with open("quotes.txt", "w") as quote_file:
+            with open(QUOTES_FILE, "w") as quote_file:
                 for quote in quote_list:
                     quote_file.write(f"{quote}\n")
 
