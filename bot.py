@@ -11,7 +11,7 @@ bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"))
 @bot.event
 async def on_ready():
     # change the presence
-    await bot.change_presence(activity=discord.Game(f"Recording quotes..."))
+    await bot.change_presence(activity=discord.Game(f"Recording history..."))
 
 @bot.command(name="quote")
 async def handle_get_quote(ctx, *, expr=None):
