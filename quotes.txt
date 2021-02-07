@@ -1,0 +1,3 @@
+example quote file
+each line is a quote
+make sure to leave an empty line at the end of the file (like so)
