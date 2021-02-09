@@ -9,7 +9,7 @@ Made to handle quote files made by some eggdrop quote script from IRC (each line
 
 
 ## Running
-`python3 bot.py` after you've added the `DISCORD_TOKEN` to the bot file
+`python3 bot.py` after you've added the `DISCORD_TOKEN` to the bot file. You can create a bot here (https://discord.com/developers/applications).
 
 
 ## TODO
