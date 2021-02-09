@@ -19,23 +19,24 @@ async def handle_get_quote(ctx, *, expr=None):
     # let's make it look like the bot is working
     await ctx.channel.trigger_typing()
 
-    # open file to memory
-    with open(QUOTES_FILE) as quote_file:
-        quote_list = [line.strip() for line in quote_file]
 
-    # select matching quotes
-    if not expr:
-        selected_quotes = quote_list
+    quote_list = []
+    # open file to memory & select matching quotes
+    if not expr: 
+        with open(QUOTES_FILE) as quote_file:
+            quote_list = [line.strip() for line in quote_file]
     else:
-        selected_quotes = [quote for quote in quote_list if expr.lower() in quote.lower()]
+        with open(QUOTES_FILE) as quote_file:
+            quote_list = [line.strip() for line in quote_file if expr.lower() in line.strip().lower()]
 
-        # exit early if we had no matching quote
-        if len(selected_quotes) == 0:
-            await ctx.channel.send("Error: Unable to find quote!")
-            return
+
+    # exit early if we had no matching quote
+    if len(quote_list) == 0:
+        await ctx.channel.send("Error: Unable to find quote!")
+        return
     
     # send a matching quote at random
-    embed = discord.Embed(title="Quote", description=random.choice(selected_quotes), color=random.randint(0, 0xffffff))
+    embed = discord.Embed(title="Quote", description=random.choice(quote_list), color=random.randint(0, 0xffffff))
     await ctx.channel.send(embed=embed)
 
 
