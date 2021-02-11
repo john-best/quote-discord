@@ -36,8 +36,9 @@ async def handle_get_quote(ctx, *, expr=None):
         return
     
     # send a matching quote at random
-    embed = discord.Embed(title="Quote", description=random.choice(quote_list), color=random.randint(0, 0xffffff))
-    await ctx.channel.send(embed=embed)
+    # embed = discord.Embed(title="Quote", description=random.choice(quote_list), color=random.randint(0, 0xffffff))
+    # ^ if people just !addquote links then the image will auto show thanks to discord so maybe this is the better way
+    await ctx.channel.send(f"{random.choice(quote_list)}")
 
 
 @bot.command(name="addquote")

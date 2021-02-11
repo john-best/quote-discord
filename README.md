@@ -10,7 +10,3 @@ Made to handle quote files made by some eggdrop quote script from IRC (each line
 
 ## Running
 `python3 bot.py` after you've added the `DISCORD_TOKEN` to the bot file. You can create a bot here (https://discord.com/developers/applications).
-
-
-## TODO
-Not sure if embeds are cool for IRC quotes, maybe should just convert back to the old style of `Quote: quote here...`. It's a small change in any case.
