@@ -19,7 +19,6 @@ async def handle_get_quote(ctx, *, expr=None):
     # let's make it look like the bot is working
     await ctx.channel.trigger_typing()
 
-
     quote_list = []
     # open file to memory & select matching quotes
     if not expr: 
@@ -36,20 +35,21 @@ async def handle_get_quote(ctx, *, expr=None):
         return
     
     # send a matching quote at random
-    # embed = discord.Embed(title="Quote", description=random.choice(quote_list), color=random.randint(0, 0xffffff))
-    # ^ if people just !addquote links then the image will auto show thanks to discord so maybe this is the better way
-    await ctx.channel.send(f"{random.choice(quote_list)}")
+    quote = random.choice(quote_list).replace("\\n", "\n")
+    await ctx.channel.send(f"{quote}")
 
 
 @bot.command(name="addquote")
 async def handle_add_quote(ctx, *, quote):
-    # let's make it look like the bot is working
-    await ctx.channel.trigger_typing()
+
+    # parse newlines
+    quote = "\\n".join(quote.split("\n"))
 
     # append quote to end of file
     with open(QUOTES_FILE, 'a') as quote_file:
         quote_file.write(f"{quote}\n")
-    await ctx.channel.send("Quote added!")
+    await ctx.message.add_reaction("✅")
+
 
 
 @commands.has_permissions(manage_messages=True)
@@ -68,6 +68,9 @@ async def handle_del_quote(ctx, *, quote_to_delete=None):
         await ctx.channel.send("Error: no quote given!")
         return
 
+    # parse newlines
+    quote_to_delete = "\\n".join(quote_to_delete.split("\n"))
+
     # open file to memory
     with open(QUOTES_FILE) as quote_file:
         quote_list = [line.strip() for line in quote_file]
@@ -85,8 +88,11 @@ async def handle_del_quote(ctx, *, quote_to_delete=None):
     # found the exact quote we want
     elif len(selected_quotes) == 1:
 
+        # parse newlines
+        selected_quote = "\n".join(selected_quotes[0][1].split("\\n"))
+
         # let's confirm if we want to delete the quote
-        embed = discord.Embed(title="Are you sure you want to delete this quote?", description=selected_quotes[0][1], color=0xff0000)
+        embed = discord.Embed(title="Are you sure you want to delete this quote?", description=selected_quote, color=0xff0000)
         sent = await ctx.channel.send(embed=embed)
         await sent.add_reaction("✅")
 
@@ -105,7 +111,7 @@ async def handle_del_quote(ctx, *, quote_to_delete=None):
                 for quote in quote_list:
                     quote_file.write(f"{quote}\n")
 
-            await ctx.channel.send("Quote deleted!")
+            await ctx.message.add_reaction("✅")
 
     # found multiple quotes
     elif len(selected_quotes) <= 5:
